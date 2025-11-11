@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dataset Visualization</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 30px 20px;
+    }
+
+    .main-title {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    .group {
+      margin-bottom: 60px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .instruction {
+      font-size: 16px;
+      text-align: center;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      justify-items: center;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .image-container img {
+      width: 90px;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .image-container:hover img {
+      transform: scale(1.1);
+      box-shadow: 0 0 12px rgba(0, 123, 255, 0.6);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Main title for the dataset section -->
+  <div class="main-title">Dataset Section Display</div>
+
+  <!-- Example 1 image display -->
+  <div class="group" id="folder1">
+    <div class="title">Example 1</div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- Example 2 image display -->
+  <div class="group" id="folder2">
+    <div class="title">Example 2</div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- Example 3 image display -->
+  <div class="group" id="folder3">
+    <div class="title">Example 3</div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- Example 4 image display -->
+  <div class="group" id="folder4">
+    <div class="title">Example 4</div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- Example 5 image display -->
+  <div class="group" id="folder5">
+    <div class="title">Example 5</div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- Example 6 image display -->
+  <div class="group" id="folder6">
+    <div class="title">Example 6</div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- Example 7 image display -->
+  <div class="group" id="folder7">
+    <div class="title">Example 7</div>
+    <div class="grid"></div>
+  </div>
+
+  <script>
+    const folders = [1, 2, 3, 4, 5, 6, 7];
+    const totalImages = 42;
+
+    folders.forEach(folder => {
+      const container = document.getElementById(`folder${folder}`);
+      const grid = container.querySelector(".grid");
+
+      for (let i = 1; i <= totalImages; i++) {
+        const imgContainer = document.createElement("div");
+        imgContainer.className = "image-container";
+
+        const img = document.createElement("img");
+        // Key: Correct path, find the corresponding folder directly from the current directory
+        img.src = `${folder}/${i}.jpg`; 
+        img.alt = `Image ${i} from example ${folder}`;
+
+        const label = document.createElement("div");
+        label.className = "image-index";
+        label.textContent = `#${i}`;
+
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(label);
+        grid.appendChild(imgContainer);
+      }
+    });
+  </script>
+</body>
+
+</html>
+    

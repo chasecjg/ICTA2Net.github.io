@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplementary Material - Image Color Temperature Aesthetics</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2A4365',
+                        accent: '#ED8936',
+                        light: '#F7FAFC',
+                        dark: '#1A202C',
+                        muted: '#718096'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-gradient {
+                background: linear-gradient(145deg, #ffffff, #f0f4f8);
+            }
+            .title-line-height {
+                line-height: 1.3;
+            }
+            .card-content {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            .button-container {
+                margin-top: auto;
+                align-self: flex-end;
+            }
+        }
+    </style>
+    
+    <style>
+        /* 基础动画定义 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 卡片悬停效果 */
+        .resource-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+        }
+        
+        .resource-card:hover .icon-container {
+            transform: scale(1.1);
+        }
+        
+        .icon-container {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="font-inter bg-light text-dark antialiased">
+    <!-- 顶部导航 -->
+    <header class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100 transition-all duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="text-primary font-semibold text-xl tracking-tight">Supplementary Material</div>
+                <div class="px-3 py-1.5 bg-gray-100 text-muted rounded-full text-sm font-medium">
+                    AAAI 2026 | Submission ID: 11570
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+        <!-- 标题部分 - 严格两行显示 -->
+        <section class="max-w-4xl mx-auto text-center mb-16 fade-in">
+            <div class="w-12 h-1 bg-accent mx-auto mb-6 rounded-full"></div>
+            <h1 class="text-[clamp(1.3rem,3vw,1.8rem)] font-bold mb-8 title-line-height">
+                Thinking Aesthetics Assessment of Image Color Temperature:<br>
+                Models, Datasets and Benchmarks
+            </h1>
+            <p class="text-muted text-lg leading-relaxed max-w-2xl mx-auto">
+                A curated collection of supporting resources for our submission, 
+                organized for easy access and review.
+            </p>
+        </section>
+        
+        <!-- 资源卡片网格 - 2×2布局 -->
+        <section class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- 第一行第一列：补充文档 -->
+                <a href="appendix/appendix.pdf" target="_blank" class="block">
+                    <div class="resource-card card-gradient rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-full fade-in">
+                        <div class="p-6">
+                            <div class="card-content">
+                                <div class="icon-container w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                                    <i class="fa fa-file-text-o text-primary text-2xl"></i>
+                                </div>
+                                <h2 class="text-xl font-semibold mb-3">Supplementary Documents</h2>
+                                <p class="text-muted text-sm leading-relaxed mb-4">
+                                    The supplementary materials include detailed method design, data processing procedures, experimental analysis, visualizations, and application analysis to support our research.
+                                </p>
+                                <div class="button-container flex items-center text-primary font-medium">
+                                    <span>View Documents</span>
+                                    <i class="fa fa-long-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 第一行第二列：Demo -->
+                <a href="demo/demo.html" class="block">
+                    <div class="resource-card card-gradient rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-full fade-in" style="transition-delay: 100ms;">
+                        <div class="p-6">
+                            <div class="card-content">
+                                <div class="icon-container w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                                    <i class="fa fa-desktop text-primary text-2xl"></i>
+                                </div>
+                                <h2 class="text-xl font-semibold mb-3">Interactive Demo</h2>
+                                <p class="text-muted text-sm leading-relaxed mb-4">
+                                    Interactive demonstration of our color temperature aesthetics assessment with real-time visualizations.
+                                </p>
+                                <div class="button-container flex items-center text-primary font-medium">
+                                    <span>Try Demo</span>
+                                    <i class="fa fa-long-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 第二行第一列：数据集（原代码位置） -->
+                <a href="datasets/index.html" target="_blank" class="block">
+                    <div class="resource-card card-gradient rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-full fade-in" style="transition-delay: 200ms;">
+                        <div class="p-6">
+                            <div class="card-content">
+                                <div class="icon-container w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                                    <i class="fa fa-database text-primary text-2xl"></i>
+                                </div>
+                                
+                                <h2 class="text-xl font-semibold mb-3">Datasets</h2>
+                                <p class="text-muted text-sm leading-relaxed mb-4">
+                                    A compressed version of the color temperature annotated datasets used in our research is available for preliminary training and validation in experimental settings.
+                                </p>
+                                <div class="button-container flex items-center text-primary font-medium">
+                                    <span>Access Datasets</span>
+                                    <i class="fa fa-long-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 第二行第二列：代码（原数据集位置） -->
+                <div class="block">
+                    <div class="resource-card card-gradient rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-full fade-in" style="transition-delay: 300ms;">
+                        <div class="p-6">
+                            <div class="card-content">
+                                <div class="icon-container w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                                    <i class="fa fa-code text-primary text-2xl"></i>
+                                </div>
+                                <h2 class="text-xl font-semibold mb-3">Source Code</h2>
+                                <p class="text-muted text-sm leading-relaxed mb-4">
+                                    Please refer to the "code" folder for implementation details. Due to storage limitations, only test scripts for our color temperature aesthetics assessment models are provided in this supplementary material.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分隔线 -->
+            <div class="max-w-5xl mx-auto my-16">
+                <div class="border-t border-gray-100"></div>
+            </div>
+            
+            <!-- 评审说明 -->
+            <section class="max-w-5xl mx-auto bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-gray-100 fade-in resource-card" style="transition-delay: 400ms;">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="icon-container w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa fa-info text-accent text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold mb-3">Notes for Reviewers</h2>
+                        <p class="text-muted text-sm leading-relaxed">
+                            All materials are provided for review purposes only and have been anonymized in accordance with AAAI 2026 submission guidelines. 
+                            If you encounter any issues accessing these resources, please contact the program chairs referencing our submission ID: 11570.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-100 py-8 mt-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-muted text-sm">
+                <p>AAAI 2026 Conference Supplementary Material</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 动画脚本 -->
+    <script>
+        // 滚动触发动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // 导航栏滚动效果
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2', 'shadow-sm');
+                    header.classList.remove('py-4');
+                } else {
+                    header.classList.add('py-4');
+                    header.classList.remove('py-2', 'shadow-sm');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    

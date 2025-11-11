@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Demo Showcase</title>
+  <style>
+    /* 添加主标题样式 */
+    .main-title {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #333;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* 添加滑块提示文本样式 */
+    .slider-hint {
+      color: #999; /* 淡灰色 */
+      font-size: 12px;
+      margin-top: 6px;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* rank_slide.html 的样式 */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 30px 20px;
+      background: #f8f8f8;
+    }
+
+    /* 缩小组之间间距 */
+    .group {
+      margin-bottom: 60px;
+      /* 从60改为40 */
+    }
+
+    .carousel-wrapper {
+      perspective: 1000px;
+      height: 150px;
+      /* 从240降到200 */
+      overflow: visible;
+      position: relative;
+    }
+
+    .carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    .carousel img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      transform-origin: center center;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      user-select: none;
+      cursor: pointer;
+      opacity: 0.3;
+      filter: brightness(0.7);
+    }
+
+    .carousel img.active {
+      opacity: 1 !important;
+      filter: brightness(1) !important;
+      z-index: 1000 !important;
+      box-shadow: 0 0 25px rgba(0, 123, 255, 0.9);
+    }
+
+    /* 缩小滑条外边距 */
+    .slider-wrapper {
+      width: 300px;
+      margin: 15px auto 0;
+      /* 从20改为12 */
+      text-align: center;
+      user-select: none;
+    }
+
+    /* 颜色渐变的色温滑轨 */
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      height: 8px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      /* 色温渐变背景：冷蓝→中间白→暖黄 */
+      background: linear-gradient(
+        to right,
+        #3a85ff,
+        /* 冷蓝 */
+        #9ec5fe,
+        /* 淡蓝 */
+        #ffffff,
+        /* 白色中段 */
+        #fdd570,
+        /* 柔和暖黄 */
+        #ffbb33
+        /* 明亮暖黄 */
+      );
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 滑块圆点颜色，偏暖色 */
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ffb533;
+      /* 暖橙黄 */
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 10;
+      margin-top: -5px;
+      /* 居中 */
+      border: 2px solid #cc8b00;
+      /* 深橙色边框 */
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ffb533;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 10;
+      border: 2px solid #cc8b00;
+    }
+
+    .title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 6px;
+      /* 缩小底部间距 */
+    }
+
+    .feedback {
+      height: 24px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    /* comparision.html 的样式 */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 30px 20px;
+    }
+
+    .group {
+      margin-bottom: 60px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .instruction {
+      font-size: 16px;
+      text-align: center;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      justify-items: center;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .image-container img {
+      width: 90px;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .image-container:hover img {
+      transform: scale(1.1);
+      box-shadow: 0 0 12px rgba(0, 123, 255, 0.6);
+    }
+
+    .image-container.selected {
+      border-radius: 10px;
+      animation: laser-border 1.2s linear infinite;
+    }
+
+    @keyframes laser-border {
+      0% {
+        box-shadow: 0 0 8px 2px #ff00ff, 0 0 12px 4px #ff9900 inset;
+      }
+
+      50% {
+        box-shadow: 0 0 12px 4px #00ffff, 0 0 16px 6px #ff00ff inset;
+      }
+
+      100% {
+        box-shadow: 0 0 8px 2px #ff00ff, 0 0 12px 4px #ff9900 inset;
+      }
+    }
+
+    .image-index {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #555;
+      user-select: none;
+    }
+
+    .feedback {
+      margin-top: 14px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      min-height: 24px;
+      color: #222;
+    }
+
+    .compare-panel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .compare-image,
+    .compare-symbol {
+      /* 初始隐藏，且不占位 */
+      display: none;
+      border-radius: 10px;
+      border: 3px solid #007bff;
+      box-shadow: 0 0 12px rgba(0, 123, 255, 0.7);
+      width: 160px;
+      height: auto;
+      overflow: hidden;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #ff0080;
+      min-width: 40px;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .compare-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .compare-image .label {
+      margin-top: 6px;
+      font-weight: bold;
+      color: #007bff;
+      user-select: none;
+      font-size: 16px;
+    }
+
+    .compare-symbol {
+      /* 文字居中 */
+      font-size: 32px;
+      font-weight: bold;
+      color: #ff0080;
+      min-width: 40px;
+      text-align: center;
+      animation: pulse 1.5s ease-in-out infinite;
+      user-select: none;
+      line-height: 1;
+      border: none;
+      box-shadow: none;
+      background: transparent;
+      width: auto;
+      height: auto;
+      padding: 0 10px;
+      display: none;
+      /* 默认隐藏 */
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 添加主标题 -->
+  <div class="main-title">Demo Showcase</div>
+
+  <!-- rank_slide.html 的内容 -->
+  <div class="group" id="group1">
+    <div class="title">group 1</div>
+    <div class="carousel-wrapper"><div class="carousel"></div></div>
+    <div class="slider-wrapper">
+      <input type="range" min="0" max="41" value="0" class="slider" />
+      <div class="slider-hint">Drag the slider to view color temperature aesthetic changes</div>
+      <div class="feedback"></div>
+    </div>
+  </div>
+
+  <div class="group" id="group2">
+    <div class="title">group 2</div>
+    <div class="carousel-wrapper"><div class="carousel"></div></div>
+    <div class="slider-wrapper">
+      <input type="range" min="0" max="41" value="0" class="slider" />
+      <div class="slider-hint">Drag the slider to view color temperature aesthetic changes</div>
+      <div class="feedback"></div>
+    </div>
+  </div>
+
+  <div class="group" id="group3">
+    <div class="title">group 3</div>
+    <div class="carousel-wrapper"><div class="carousel"></div></div>
+    <div class="slider-wrapper">
+      <input type="range" min="0" max="41" value="0" class="slider" />
+      <div class="slider-hint">Drag the slider to view color temperature aesthetic changes</div>
+      <div class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- comparision.html 的内容（保持原样未修改） -->
+  <div class="group" id="comparison-group1">
+    <div class="title">Group 1</div>
+    <div class="instruction">Click on two images to compare aesthetics</div>
+    <div class="grid"></div>
+    <div class="compare-panel">
+      <div class="compare-image" id="comparison-group1-compareA"></div>
+      <div class="compare-symbol" id="comparison-group1-symbol"></div>
+      <div class="compare-image" id="comparison-group1-compareB"></div>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="group" id="comparison-group2">
+    <div class="title">Group 2</div>
+    <div class="instruction">Click on two images to compare aesthetics</div>
+    <div class="grid"></div>
+    <div class="compare-panel">
+      <div class="compare-image" id="comparison-group2-compareA"></div>
+      <div class="compare-symbol" id="comparison-group2-symbol"></div>
+      <div class="compare-image" id="comparison-group2-compareB"></div>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="group" id="comparison-group3">
+    <div class="title">Group 3</div>
+    <div class="instruction">Click on two images to compare aesthetics</div>
+    <div class="grid"></div>
+    <div class="compare-panel">
+      <div class="compare-image" id="comparison-group3-compareA"></div>
+      <div class="compare-symbol" id="comparison-group3-symbol"></div>
+      <div class="compare-image" id="comparison-group3-compareB"></div>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <script>
+    // rank_slide.html 的脚本
+    const totalImages = 42;
+    const maxVisible = 5;
+    // 左右各显示多少张，超过的不显示（渐变消失）
+    const spacingX = 140;
+    // 每张图水平方向间距
+    const scaleStep = 0.15;
+    // 每张图缩放递减幅度
+    const opacityStep = 0.2;
+    // 每张图透明度递减幅度
+
+    const groups = [
+      {
+        id: 'group1',
+        folder: 'group1',
+        scores: [
+    0, 1, 2, 3, 4, 5, 6, 9, 20, 25, 
+    28, 31, 34, 35, 37, 39, 41, 40, 
+    38, 36, 33, 30, 29, 27, 26, 24, 
+    23, 22, 21, 19, 18, 17, 16, 15, 
+    14, 13, 12, 11, 10, 8, 7, 32
+]
+      },
+      {
+        id: 'group2',
+        folder: 'group2',
+        scores: [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+    10, 11, 17, 27, 31, 35, 37, 41, 
+    39, 38, 36, 34, 33, 32, 30, 29, 
+    28, 26, 25, 24, 23, 22, 21, 20, 
+    19, 18, 16, 15, 14, 13, 12, 40
+]
+      },
+      {
+        id: 'group3',
+        folder: 'group3',
+        scores: [
+    0, 1, 2, 3, 13, 25, 31, 34, 37, 40, 
+    41, 38, 36, 35, 33, 32, 30, 29, 28, 27, 
+    26, 24, 23, 22, 21, 20, 19, 18, 17, 16, 
+    15, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 39
+]
+      }
+    ];
+
+    groups.forEach(group => {
+      const el = document.getElementById(group.id);
+      const carousel = el.querySelector('.carousel');
+      const slider = el.querySelector('.slider');
+      const feedback = el.querySelector('.feedback');
+      let lastIndex = 0;
+      const images = [];
+
+      // 加载图像
+      for (let i = 0; i < totalImages; i++) {
+        const img = document.createElement('img');
+        img.src = `images/${group.folder}/${i + 1}.jpg`;
+        carousel.appendChild(img);
+        images.push(img);
+      }
+
+      function updateCarousel(centerIndex) {
+        images.forEach((img, i) => {
+          const offset = i - centerIndex;
+          if (Math.abs(offset) > maxVisible) {
+            img.style.opacity = 0;
+            img.style.pointerEvents = 'none';
+            img.style.transform = 'translate(-50%, -50%) scale(0)';
+            img.classList.remove('active');
+            return;
+          }
+
+          const absOffset = Math.abs(offset);
+          let scale = 1 - scaleStep * absOffset;
+          if (offset === 0) {
+            scale *= 1.3;
+            // ✅ 只放大当前选中的图像
+          }
+          const opacity = 1 - opacityStep * absOffset;
+          const translateX = offset * spacingX;
+
+
+          img.style.pointerEvents = offset === 0 ? 'auto' : 'none';
+          img.style.opacity = opacity;
+          img.style.zIndex = 1000 - absOffset;
+          img.style.filter = `brightness(${0.7 + 0.3 * (1 - absOffset / maxVisible)})`;
+          img.style.transform = `translate(calc(-50% + ${translateX}px), -50%) scale(${scale})`;
+
+          if (offset === 0) {
+            img.classList.add('active');
+          } else {
+            img.classList.remove('active');
+          }
+        });
+      }
+
+      function updateFeedback(index) {
+        if (index === lastIndex) {
+          feedback.textContent = '';
+          return;
+        }
+        const scoreNow = group.scores[index];
+        const scoreLast = group.scores[lastIndex];
+        if (scoreNow > scoreLast) {
+          feedback.textContent = '👍Get Better';
+          feedback.style.color = 'green';
+        } else if (scoreNow < scoreLast) {
+          feedback.textContent = '👎 Get Worse';
+          feedback.style.color = 'red';
+        } else {
+          feedback.textContent = '👌 No Difference!';
+          feedback.style.color = 'gray';
+        }
+        lastIndex = index;
+      }
+
+      // 默认显示评分最高的图像
+      const bestIndex = Math.floor(totalImages / 2);
+      slider.value = bestIndex;
+      updateCarousel(bestIndex);
+      updateFeedback(bestIndex);
+
+      slider.addEventListener('input', () => {
+        const index = parseInt(slider.value);
+        updateCarousel(index);
+        updateFeedback(index);
+      });
+    });
+
+    // comparision.html 的脚本（保持原样未修改）
+    const comparisonGroups = [
+      {
+        id: "comparison-group1",
+        folder: "group1",
+        scores: [
+    0, 1, 2, 3, 4, 5, 6, 9, 20, 25, 
+    28, 31, 34, 35, 37, 39, 41, 40, 
+    38, 36, 33, 30, 29, 27, 26, 24, 
+    23, 22, 21, 19, 18, 17, 16, 15, 
+    14, 13, 12, 11, 10, 8, 7, 32
+]
+      },
+      {
+        id: "comparison-group2",
+        folder: "group2",
+        scores: [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+    10, 11, 17, 27, 31, 35, 37, 41, 
+    39, 38, 36, 34, 33, 32, 30, 29, 
+    28, 26, 25, 24, 23, 22, 21, 20, 
+    19, 18, 16, 15, 14, 13, 12, 40
+]
+      },
+      {
+        id: 'comparison-group3',
+        folder: 'group3',
+        scores: [
+    0, 1, 2, 3, 13, 25, 31, 34, 37, 40, 
+    41, 38, 36, 35, 33, 32, 30, 29, 28, 27, 
+    26, 24, 23, 22, 21, 20, 19, 18, 17, 16, 
+    15, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4, 39
+]
+      }
+    ];
+
+    comparisonGroups.forEach(group => {
+      const container = document.getElementById(group.id);
+      const grid = container.querySelector(".grid");
+      const feedback = container.querySelector(".feedback");
+      const compareA = container.querySelector(`#${group.id}-compareA`);
+      const compareB = container.querySelector(`#${group.id}-compareB`);
+      const symbolEl = container.querySelector(`#${group.id}-symbol`);
+      const selectedIndices = [];
+
+      // 一开始隐藏对比区
+      clearCompareArea();
+
+      for (let i = 0; i < totalImages; i++) {
+        const imgContainer = document.createElement("div");
+        imgContainer.className = "image-container";
+        imgContainer.title = "Click to select";
+
+        const img = document.createElement("img");
+        img.src = `images/${group.folder}/${i + 1}.jpg`;
+        img.dataset.index = i;
+
+        const label = document.createElement("div");
+        label.className = "image-index";
+        label.textContent = `#${i + 1}`;
+
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(label);
+        grid.appendChild(imgContainer);
+
+        imgContainer.addEventListener("click", () => {
+          // 点击超过两张时，清空之前所有选择和放大内容
+          if (selectedIndices.length === 2) {
+            selectedIndices.splice(0, 2);
+            container.querySelectorAll(".image-container.selected").forEach(el => el.classList.remove("selected"));
+            feedback.textContent = "";
+            clearCompareArea();
+          }
+
+          if (selectedIndices.includes(i)) {
+            // 取消选择时清空放大内容和提示
+            selectedIndices.splice(selectedIndices.indexOf(i), 1);
+            imgContainer.classList.remove("selected");
+            feedback.textContent = "";
+            clearCompareArea();
+            return;
+          }
+
+          selectedIndices.push(i);
+          imgContainer.classList.add("selected");
+
+          if (selectedIndices.length === 2) {
+            const [a, b] = selectedIndices;
+            const scoreA = group.scores[a];
+            const scoreB = group.scores[b];
+
+            compareA.innerHTML = `
+              <img src="images/${group.folder}/${a + 1}.jpg" alt="Image A" />
+              <div class="label">#${a + 1}</div>
+            `;
+            compareB.innerHTML = `
+              <img src="images/${group.folder}/${b + 1}.jpg" alt="Image B" />
+              <div class="label">#${b + 1}</div>
+            `;
+
+            // 显示对比区
+            compareA.style.display = "flex";
+            compareB.style.display = "flex";
+            symbolEl.style.display = "flex";
+
+            compareA.classList.add("show");
+            compareB.classList.add("show");
+            symbolEl.classList.add("show");
+
+            if (scoreA === scoreB) {
+              feedback.style.color = "orange";
+              feedback.textContent = `😐 Image #${a + 1} and #${b + 1} have equal scores.`;
+              symbolEl.textContent = "=";
+            } else {
+              const better = scoreA > scoreB ? a : b;
+              const symbol = scoreA > scoreB ? ">" : "<";
+              feedback.style.color = "green";
+              feedback.textContent = `✅ Image #${better + 1} is more aesthetic! (Score: ${group.scores[better].toFixed(2)})`;
+              symbolEl.textContent = symbol;
+            }
+          } else {
+            feedback.textContent = "";
+            clearCompareArea();
+          }
+        });
+      }
+
+      function clearCompareArea() {
+        compareA.innerHTML = "";
+        compareB.innerHTML = "";
+        symbolEl.textContent = "";
+
+        // 隐藏容器，避免残影
+        compareA.style.display = "none";
+        compareB.style.display = "none";
+        symbolEl.style.display = "none";
+
+        compareA.classList.remove("show");
+        compareB.classList.remove("show");
+        symbolEl.classList.remove("show");
+      }
+    });
+  </script>
+
+</body>
+
+</html>
+    
